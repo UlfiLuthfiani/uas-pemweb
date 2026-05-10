@@ -1,9 +1,6 @@
 import { Hono } from "hono";
 import { serveStatic } from "hono/bun";
 
-// ============================================================
-//  WORD LIST (Bahasa Indonesia)
-// ============================================================
 const WORDS = [
   "kucing","anjing","burung","ikan","kelinci","harimau","gajah","kuda","sapi","ayam",
   "pohon","bunga","daun","batu","sungai","gunung","laut","pantai","hutan","sawah",
@@ -660,9 +657,5 @@ const server = Bun.serve({
 });
 
 console.log(`
-╔══════════════════════════════════════╗
-║  🎮  KetiKing! Server Running        ║
-║  🌐  http://localhost:${server.port} ║
-║  ⚡  WebSocket ready                 ║
-╚══════════════════════════════════════╝
+ http://localhost:${server.port} 
 `);
