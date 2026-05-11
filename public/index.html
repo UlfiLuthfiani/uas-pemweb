@@ -3,723 +3,354 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TypeRush! 🎮</title>
+  <title>TypeRush!</title>
   <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
   <style>
-    /* ===== RESET & BASE ===== */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:        #0f0e17;
-      --surface:   #1a1828;
-      --surface2:  #242236;
-      --border:    #2e2b4a;
-      --primary:   #ff6b6b;
-      --secondary: #ffd93d;
-      --accent:    #6bcb77;
-      --blue:      #4d96ff;
-      --purple:    #c77dff;
-      --text:      #fffffe;
-      --muted:     #a8a4c8;
-      --radius:    18px;
+      --bg: #f0f4ff;
+      --surface: #ffffff;
+      --surface2: #f5f7ff;
+      --border: #d4d9f0;
+      --primary: #ff4757;
+      --secondary: #ff9f1c;
+      --accent: #2ec4b6;
+      --blue: #3a86ff;
+      --purple: #8338ec;
+      --text: #1a1a2e;
+      --muted: #6b7280;
+      --radius: 18px;
       --radius-sm: 10px;
     }
 
-    html, body {
-      width: 100%; height: 100%;
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'Nunito', sans-serif;
-      overflow-x: hidden;
-    }
+    html, body { width: 100%; height: 100%; background: var(--bg); color: var(--text); font-family: 'Nunito', sans-serif; overflow-x: hidden; }
 
-    /* ===== ANIMATED BG BLOBS ===== */
     body::before, body::after {
-      content: '';
-      position: fixed;
-      border-radius: 50%;
-      filter: blur(90px);
-      opacity: 0.18;
-      pointer-events: none;
-      z-index: 0;
+      content: ''; position: fixed; border-radius: 50%; filter: blur(80px);
+      opacity: 0.22; pointer-events: none; z-index: 0;
       animation: floatBlob 8s ease-in-out infinite alternate;
     }
-    body::before {
-      width: 500px; height: 500px;
-      background: var(--primary);
-      top: -150px; left: -150px;
-    }
-    body::after {
-      width: 400px; height: 400px;
-      background: var(--blue);
-      bottom: -100px; right: -100px;
-      animation-delay: -4s;
-    }
-    @keyframes floatBlob {
-      from { transform: translate(0,0) scale(1); }
-      to   { transform: translate(40px, 40px) scale(1.1); }
-    }
+    body::before { width: 500px; height: 500px; background: #a8d8ea; top: -150px; left: -150px; }
+    body::after { width: 400px; height: 400px; background: #ffd6e0; bottom: -100px; right: -100px; animation-delay: -4s; }
+    @keyframes floatBlob { from { transform: translate(0,0) scale(1); } to { transform: translate(40px,40px) scale(1.1); } }
 
-    /* ===== LAYOUT ===== */
     #app {
       position: relative; z-index: 1;
-      min-height: 100vh;
-      min-height: 100dvh; /* dynamic viewport height — fix mobile browser bar */
+      min-height: 100dvh;
       display: flex; flex-direction: column;
       align-items: center; justify-content: center;
       padding: 24px;
     }
 
-    /* ===== SCREENS ===== */
     .screen { display: none; width: 100%; max-width: 520px; box-sizing: border-box; }
     .screen.active { display: block; animation: popIn .4s cubic-bezier(.34,1.56,.64,1); }
-    @keyframes popIn {
-      from { opacity: 0; transform: scale(.88) translateY(20px); }
-      to   { opacity: 1; transform: scale(1) translateY(0); }
-    }
+    @keyframes popIn { from { opacity: 0; transform: scale(.88) translateY(20px); } to { opacity: 1; transform: scale(1) translateY(0); } }
 
-    /* ===== CARD ===== */
-    .card {
-      background: var(--surface);
-      border: 2px solid var(--border);
-      border-radius: var(--radius);
-      padding: 32px;
-      box-shadow: 0 8px 40px rgba(0,0,0,.5), 0 0 0 1px rgba(255,255,255,.04) inset;
-    }
+    .card { background: var(--surface); border: 2px solid var(--border); border-radius: var(--radius); padding: 32px; box-shadow: 0 4px 24px rgba(58,134,255,.08); }
 
-    /* ===== LOGO ===== */
-    .logo {
-      text-align: center;
-      margin-bottom: 28px;
-    }
-    .logo-emoji { font-size: 64px; display: block; animation: bounce 2s ease-in-out infinite; }
-    @keyframes bounce {
-      0%,100% { transform: translateY(0); }
-      50%      { transform: translateY(-12px); }
-    }
-    .logo-title {
-      font-family: 'Fredoka One', cursive;
-      font-size: 48px;
-      background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      background-clip: text;
-      line-height: 1;
-    }
-    .logo-sub {
-      font-size: 14px; color: var(--muted); margin-top: 6px;
-      font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
-    }
+    .logo { text-align: center; margin-bottom: 28px; }
+    .logo-emoji { font-size: 56px; display: block; animation: bounce 2s ease-in-out infinite; }
+    @keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+    .logo-title { font-family: 'Fredoka One', cursive; font-size: 48px; background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1; }
+    .logo-sub { font-size: 14px; color: var(--muted); margin-top: 6px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
 
-    /* ===== SECTION TITLE ===== */
-    .section-title {
-      font-family: 'Fredoka One', cursive;
-      font-size: 22px; color: var(--secondary);
-      margin-bottom: 16px;
-      display: flex; align-items: center; gap: 8px;
-    }
+    .section-title { font-family: 'Fredoka One', cursive; font-size: 22px; color: var(--purple); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
 
-    /* ===== INPUTS ===== */
     .field { margin-bottom: 14px; }
-    .field label {
-      display: block; font-size: 13px; font-weight: 800;
-      color: var(--muted); letter-spacing: .05em;
-      text-transform: uppercase; margin-bottom: 6px;
-    }
-    .input {
-      width: 100%; padding: 13px 16px;
-      background: var(--surface2);
-      border: 2px solid var(--border);
-      border-radius: var(--radius-sm);
-      color: var(--text); font-family: 'Nunito', sans-serif;
-      font-size: 16px; font-weight: 700;
-      outline: none; transition: border-color .2s, box-shadow .2s;
-    }
-    .input:focus {
-      border-color: var(--blue);
-      box-shadow: 0 0 0 4px rgba(77,150,255,.18);
-    }
-    .input::placeholder { color: var(--border); }
-
-    /* Select */
+    .field label { display: block; font-size: 13px; font-weight: 800; color: var(--muted); letter-spacing: .05em; text-transform: uppercase; margin-bottom: 6px; }
+    .input { width: 100%; padding: 13px 16px; background: var(--surface2); border: 2px solid var(--border); border-radius: var(--radius-sm); color: var(--text); font-family: 'Nunito', sans-serif; font-size: 16px; font-weight: 700; outline: none; transition: border-color .2s, box-shadow .2s; }
+    .input:focus { border-color: var(--blue); box-shadow: 0 0 0 4px rgba(58,134,255,.15); }
+    .input::placeholder { color: #c0c5d8; }
     select.input { cursor: pointer; appearance: none; }
+    .input-hint { font-size: 11px; color: var(--muted); margin-top: 4px; font-weight: 700; }
 
-    /* ===== BUTTONS ===== */
-    .btn {
-      width: 100%; padding: 14px;
-      border: none; border-radius: var(--radius-sm);
-      font-family: 'Fredoka One', cursive;
-      font-size: 20px; cursor: pointer;
-      transition: transform .15s, box-shadow .15s, filter .15s;
-      position: relative; overflow: hidden;
-    }
+    .btn { width: 100%; padding: 14px; border: none; border-radius: var(--radius-sm); font-family: 'Fredoka One', cursive; font-size: 20px; cursor: pointer; transition: transform .15s, box-shadow .15s; position: relative; overflow: hidden; }
     .btn:active { transform: scale(.96); }
-    .btn::after {
-      content: '';
-      position: absolute; inset: 0;
-      background: rgba(255,255,255,.12);
-      opacity: 0; transition: opacity .2s;
-    }
+    .btn::after { content: ''; position: absolute; inset: 0; background: rgba(255,255,255,.18); opacity: 0; transition: opacity .2s; }
     .btn:hover::after { opacity: 1; }
-
-    .btn-primary {
-      background: linear-gradient(135deg, var(--primary), #ff8e53);
-      color: #fff;
-      box-shadow: 0 4px 20px rgba(255,107,107,.4);
-    }
-    .btn-primary:hover { box-shadow: 0 6px 28px rgba(255,107,107,.6); transform: translateY(-2px); }
-
-    .btn-secondary {
-      background: linear-gradient(135deg, var(--blue), var(--purple));
-      color: #fff;
-      box-shadow: 0 4px 20px rgba(77,150,255,.3);
-    }
-    .btn-secondary:hover { box-shadow: 0 6px 28px rgba(77,150,255,.5); transform: translateY(-2px); }
-
-    .btn-success {
-      background: linear-gradient(135deg, var(--accent), #52b788);
-      color: #fff;
-      box-shadow: 0 4px 20px rgba(107,203,119,.3);
-    }
-    .btn-success:hover { box-shadow: 0 6px 28px rgba(107,203,119,.5); transform: translateY(-2px); }
-
-    .btn-ghost {
-      background: transparent;
-      border: 2px solid var(--border);
-      color: var(--muted); font-family: 'Nunito', sans-serif;
-      font-weight: 800; font-size: 14px;
-    }
+    .btn-primary { background: linear-gradient(135deg, var(--primary), #ff7043); color: #fff; box-shadow: 0 4px 20px rgba(255,71,87,.3); }
+    .btn-primary:hover { box-shadow: 0 6px 28px rgba(255,71,87,.45); transform: translateY(-2px); }
+    .btn-secondary { background: linear-gradient(135deg, var(--blue), var(--purple)); color: #fff; box-shadow: 0 4px 20px rgba(58,134,255,.3); }
+    .btn-secondary:hover { box-shadow: 0 6px 28px rgba(58,134,255,.45); transform: translateY(-2px); }
+    .btn-success { background: linear-gradient(135deg, var(--accent), #17a589); color: #fff; box-shadow: 0 4px 20px rgba(46,196,182,.3); }
+    .btn-success:hover { box-shadow: 0 6px 28px rgba(46,196,182,.45); transform: translateY(-2px); }
+    .btn-ghost { background: transparent; border: 2px solid var(--border); color: var(--muted); font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 14px; }
     .btn-ghost:hover { border-color: var(--muted); color: var(--text); }
-
     .btn + .btn { margin-top: 10px; }
 
-    /* ===== DIVIDER ===== */
-    .divider {
-      display: flex; align-items: center; gap: 12px;
-      color: var(--muted); font-size: 13px; font-weight: 700;
-      margin: 18px 0;
-    }
-    .divider::before, .divider::after {
-      content: ''; flex: 1;
-      height: 1px; background: var(--border);
-    }
+    .divider { display: flex; align-items: center; gap: 12px; color: var(--muted); font-size: 13px; font-weight: 700; margin: 18px 0; }
+    .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
-    /* ===== ROOM CODE DISPLAY ===== */
-    .room-code-box {
-      background: var(--surface2);
-      border: 2px dashed var(--secondary);
-      border-radius: var(--radius-sm);
-      padding: 20px;
-      text-align: center;
-      margin-bottom: 20px;
-      cursor: pointer;
-      transition: background .2s;
-    }
-    .room-code-box:hover { background: rgba(255,217,61,.07); }
+    /* AUTH */
+    .auth-tabs { display: flex; margin-bottom: 20px; background: var(--surface2); border-radius: var(--radius-sm); padding: 4px; }
+    .auth-tab { flex: 1; padding: 10px; border: none; border-radius: 8px; font-family: 'Fredoka One', cursive; font-size: 16px; cursor: pointer; background: transparent; color: var(--muted); transition: all .2s; }
+    .auth-tab.active { background: var(--surface); color: var(--text); box-shadow: 0 2px 8px rgba(0,0,0,.1); }
+    .auth-form { display: none; }
+    .auth-form.active { display: block; }
+
+    /* USER INFO BAR */
+    .user-info-bar { display: flex; align-items: center; gap: 10px; background: var(--surface2); border: 2px solid var(--border); border-radius: var(--radius-sm); padding: 10px 14px; margin-bottom: 16px; }
+    .user-info-bar .user-avatar { width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--purple)); display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+    .user-info-bar .user-name { flex: 1; font-weight: 800; font-size: 15px; }
+    .btn-logout { background: transparent; border: 1.5px solid var(--border); border-radius: 8px; padding: 5px 12px; font-size: 12px; font-weight: 800; color: var(--muted); cursor: pointer; transition: all .2s; }
+    .btn-logout:hover { border-color: var(--primary); color: var(--primary); }
+
+    /* ROOM CODE */
+    .room-code-box { background: linear-gradient(135deg, #fff9f0, #fff0f3); border: 2px dashed var(--secondary); border-radius: var(--radius-sm); padding: 20px; text-align: center; margin-bottom: 20px; cursor: pointer; transition: background .2s; }
+    .room-code-box:hover { background: linear-gradient(135deg, #fff3de, #ffe8ec); }
     .room-code-label { font-size: 12px; font-weight: 800; color: var(--muted); letter-spacing: .1em; text-transform: uppercase; }
-    .room-code-value {
-      font-family: 'Fredoka One', cursive;
-      font-size: 48px; letter-spacing: .18em;
-      color: var(--secondary);
-      line-height: 1.1;
-    }
+    .room-code-value { font-family: 'Fredoka One', cursive; font-size: 48px; letter-spacing: .18em; color: var(--secondary); line-height: 1.1; }
     .room-code-hint { font-size: 12px; color: var(--muted); margin-top: 4px; }
 
-    /* ===== PLAYER LIST ===== */
+    /* PLAYER LIST */
     .player-list { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
-    .player-item {
-      display: flex; align-items: center; gap: 12px;
-      background: var(--surface2);
-      border: 2px solid var(--border);
-      border-radius: var(--radius-sm);
-      padding: 12px 16px;
-      font-weight: 800;
-      animation: slideIn .3s ease;
-    }
-    @keyframes slideIn {
-      from { opacity: 0; transform: translateX(-16px); }
-      to   { opacity: 1; transform: translateX(0); }
-    }
-    .player-avatar {
-      width: 36px; height: 36px; border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 18px; flex-shrink: 0;
-    }
+    .player-item { display: flex; align-items: center; gap: 12px; background: var(--surface2); border: 2px solid var(--border); border-radius: var(--radius-sm); padding: 12px 16px; font-weight: 800; animation: slideIn .3s ease; }
+    @keyframes slideIn { from { opacity: 0; transform: translateX(-16px); } to { opacity: 1; transform: translateX(0); } }
+    .player-avatar { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
     .player-name { flex: 1; }
-    .player-badge {
-      font-size: 11px; font-weight: 900; padding: 3px 10px;
-      border-radius: 20px; letter-spacing: .06em; text-transform: uppercase;
-    }
-    .badge-host { background: rgba(255,107,107,.2); color: var(--primary); border: 1px solid var(--primary); }
-    .badge-ready { background: rgba(107,203,119,.2); color: var(--accent); border: 1px solid var(--accent); }
-    .badge-waiting { background: rgba(168,164,200,.15); color: var(--muted); border: 1px solid var(--border); }
-
-    .slots-info {
-      text-align: center; font-size: 13px; color: var(--muted);
-      font-weight: 700; margin-bottom: 16px;
-    }
+    .player-badge { font-size: 11px; font-weight: 900; padding: 3px 10px; border-radius: 20px; letter-spacing: .06em; text-transform: uppercase; }
+    .badge-host { background: rgba(255,71,87,.12); color: var(--primary); border: 1px solid var(--primary); }
+    .badge-ready { background: rgba(46,196,182,.12); color: var(--accent); border: 1px solid var(--accent); }
+    .badge-waiting { background: rgba(107,114,128,.1); color: var(--muted); border: 1px solid var(--border); }
+    .slots-info { text-align: center; font-size: 13px; color: var(--muted); font-weight: 700; margin-bottom: 16px; }
     .slots-info span { color: var(--secondary); font-size: 16px; }
 
-    /* ===== GAME SCREEN ===== */
+    /* GAME */
     #screen-game { max-width: 700px; width: 100%; }
+    .game-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+    .game-title { font-family: 'Fredoka One', cursive; font-size: 22px; color: var(--text); }
+    .game-round { background: var(--surface); border: 2px solid var(--border); border-radius: 20px; padding: 6px 16px; font-size: 13px; font-weight: 800; color: var(--muted); }
 
-    .game-header {
-      display: flex; align-items: center; justify-content: space-between;
-      margin-bottom: 20px;
-    }
-    .game-title {
-      font-family: 'Fredoka One', cursive;
-      font-size: 22px; color: var(--text);
-    }
-    .game-round {
-      background: var(--surface2); border: 2px solid var(--border);
-      border-radius: 20px; padding: 6px 16px;
-      font-size: 13px; font-weight: 800; color: var(--muted);
-    }
-
-    /* Lives */
-    .lives-row {
-      display: flex; align-items: center; gap: 6px;
-    }
+    .lives-row { display: flex; align-items: center; gap: 6px; }
     .heart { font-size: 22px; transition: transform .2s; }
     .heart.lost { filter: grayscale(1) opacity(.3); transform: scale(.85); }
     .heart.shake { animation: heartShake .4s; }
-    @keyframes heartShake {
-      0%,100% { transform: scale(1); }
-      25%      { transform: scale(1.4) rotate(-10deg); }
-      75%      { transform: scale(.8) rotate(10deg); }
-    }
+    @keyframes heartShake { 0%,100% { transform: scale(1); } 25% { transform: scale(1.4) rotate(-10deg); } 75% { transform: scale(.8) rotate(10deg); } }
 
-    /* Word display */
-    .word-card {
-      background: var(--surface);
-      border: 3px solid var(--border);
-      border-radius: var(--radius);
-      padding: 32px 24px;
-      text-align: center;
-      margin-bottom: 20px;
-      position: relative;
-      overflow: hidden;
-    }
-    .word-card::before {
-      content: '';
-      position: absolute; inset: 0;
-      background: linear-gradient(135deg, rgba(77,150,255,.06), rgba(199,125,255,.06));
-      pointer-events: none;
-    }
+    .word-card { background: linear-gradient(135deg, #f0f7ff, #f5f0ff); border: 3px solid var(--border); border-radius: var(--radius); padding: 32px 24px; text-align: center; margin-bottom: 20px; position: relative; overflow: hidden; }
     .word-label { font-size: 12px; font-weight: 900; color: var(--muted); letter-spacing: .12em; text-transform: uppercase; margin-bottom: 12px; }
-    .word-display {
-      font-family: 'Fredoka One', cursive;
-      font-size: 52px; letter-spacing: .12em;
-      color: var(--text); line-height: 1;
-      animation: wordPop .4s cubic-bezier(.34,1.56,.64,1);
-    }
-    @keyframes wordPop {
-      from { opacity: 0; transform: scale(.7) rotate(-4deg); }
-      to   { opacity: 1; transform: scale(1) rotate(0deg); }
-    }
+    .word-display { font-family: 'Fredoka One', cursive; font-size: 52px; letter-spacing: .12em; color: var(--text); line-height: 1; animation: wordPop .4s cubic-bezier(.34,1.56,.64,1); }
+    @keyframes wordPop { from { opacity: 0; transform: scale(.7) rotate(-4deg); } to { opacity: 1; transform: scale(1) rotate(0deg); } }
 
-    /* Timer bar */
     .timer-wrap { margin-bottom: 20px; }
-    .timer-row {
-      display: flex; justify-content: space-between; align-items: center;
-      font-size: 13px; font-weight: 800; color: var(--muted);
-      margin-bottom: 8px;
-    }
+    .timer-row { display: flex; justify-content: space-between; align-items: center; font-size: 13px; font-weight: 800; color: var(--muted); margin-bottom: 8px; }
     .timer-val { font-family: 'Fredoka One', cursive; font-size: 24px; color: var(--text); }
-    .timer-bar {
-      height: 12px; background: var(--surface2);
-      border-radius: 99px; overflow: hidden;
-      border: 2px solid var(--border);
-    }
-    .timer-fill {
-      height: 100%;
-      border-radius: 99px;
-      background: linear-gradient(90deg, var(--accent), var(--secondary));
-      transition: width .9s linear, background .3s;
-    }
-    .timer-fill.warn { background: linear-gradient(90deg, var(--primary), var(--secondary)); }
+    .timer-bar { height: 12px; background: var(--surface2); border-radius: 99px; overflow: hidden; border: 2px solid var(--border); }
+    .timer-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, var(--accent), var(--secondary)); transition: width .9s linear, background .3s; }
+    .timer-fill.warn { background: linear-gradient(90deg, var(--secondary), #ffb830); }
     .timer-fill.danger { background: var(--primary); }
 
-    /* Answer input */
     .answer-wrap { position: relative; margin-bottom: 16px; }
-    .answer-input {
-      width: 100%; padding: 16px 60px 16px 20px;
-      background: var(--surface2);
-      border: 3px solid var(--border);
-      border-radius: var(--radius-sm);
-      color: var(--text); font-family: 'Fredoka One', cursive;
-      font-size: 28px; text-align: center;
-      outline: none; letter-spacing: .1em;
-      transition: border-color .2s, box-shadow .2s;
-    }
-    .answer-input:focus { border-color: var(--blue); box-shadow: 0 0 0 4px rgba(77,150,255,.18); }
-    .answer-input.correct { border-color: var(--accent); box-shadow: 0 0 0 4px rgba(107,203,119,.25); animation: correctFlash .4s; }
-    .answer-input.wrong   { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(255,107,107,.25); animation: wrongShake .4s; }
-    @keyframes correctFlash { 0%,100%{background:var(--surface2)} 50%{background:rgba(107,203,119,.15)} }
+    .answer-input { width: 100%; padding: 16px 60px 16px 20px; background: var(--surface2); border: 3px solid var(--border); border-radius: var(--radius-sm); color: var(--text); font-family: 'Fredoka One', cursive; font-size: 28px; text-align: center; outline: none; letter-spacing: .1em; transition: border-color .2s, box-shadow .2s; }
+    .answer-input:focus { border-color: var(--blue); box-shadow: 0 0 0 4px rgba(58,134,255,.15); }
+    .answer-input.correct { border-color: var(--accent); box-shadow: 0 0 0 4px rgba(46,196,182,.2); animation: correctFlash .4s; }
+    .answer-input.wrong { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(255,71,87,.2); animation: wrongShake .4s; }
+    @keyframes correctFlash { 0%,100%{background:var(--surface2)} 50%{background:rgba(46,196,182,.1)} }
     @keyframes wrongShake { 0%,100%{transform:translateX(0)} 20%,60%{transform:translateX(-8px)} 40%,80%{transform:translateX(8px)} }
-
-    .submit-btn {
-      position: absolute; right: 10px; top: 50%;
-      transform: translateY(-50%);
-      background: var(--blue); border: none;
-      width: 40px; height: 40px; border-radius: 8px;
-      cursor: pointer; font-size: 18px;
-      transition: background .2s, transform .15s;
-    }
+    .submit-btn { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: var(--blue); border: none; width: 40px; height: 40px; border-radius: 8px; cursor: pointer; font-size: 18px; transition: background .2s, transform .15s; }
     .submit-btn:hover { background: var(--purple); transform: translateY(-50%) scale(1.1); }
 
-    /* Opponents */
-    .opponents-grid {
-      display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 12px; margin-top: 20px;
-    }
-    .opponent-card {
-      background: var(--surface);
-      border: 2px solid var(--border);
-      border-radius: var(--radius-sm);
-      padding: 14px;
-    }
+    /* OPPONENTS */
+    .opponents-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; margin-top: 20px; }
+    .opponent-card { background: var(--surface); border: 2px solid var(--border); border-radius: var(--radius-sm); padding: 14px; }
+    .opponent-card.eliminated { opacity: .4; border-color: var(--primary); }
     .opponent-name { font-size: 14px; font-weight: 800; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
     .opponent-lives { display: flex; gap: 4px; }
     .opponent-heart { font-size: 14px; }
-    .opponent-status {
-      font-size: 12px; font-weight: 700; color: var(--muted);
-      margin-top: 6px;
-    }
-    .opponent-card.eliminated {
-      opacity: .4; border-color: var(--primary);
-    }
-    .eliminated-tag {
-      font-size: 11px; background: rgba(255,107,107,.2);
-      color: var(--primary); border-radius: 4px; padding: 2px 6px;
-      font-weight: 900;
-    }
+    .opponent-status { font-size: 12px; font-weight: 700; color: var(--muted); margin-top: 6px; }
+    .eliminated-tag { font-size: 11px; background: rgba(255,71,87,.12); color: var(--primary); border-radius: 4px; padding: 2px 6px; font-weight: 900; }
 
-    /* ===== NOTIFICATION TOAST ===== */
-    #toast-container {
-      position: fixed; top: 24px; right: 24px;
-      z-index: 999; display: flex; flex-direction: column; gap: 10px;
-      pointer-events: none;
-    }
-    .toast {
-      background: var(--surface);
-      border: 2px solid var(--border);
-      border-radius: var(--radius-sm);
-      padding: 14px 18px;
-      display: flex; align-items: center; gap: 10px;
-      font-weight: 800; font-size: 14px;
-      box-shadow: 0 8px 30px rgba(0,0,0,.4);
-      animation: toastIn .4s cubic-bezier(.34,1.56,.64,1);
-      max-width: 300px;
-    }
-    @keyframes toastIn {
-      from { opacity: 0; transform: translateX(60px) scale(.9); }
-      to   { opacity: 1; transform: translateX(0) scale(1); }
-    }
+    /* TOAST */
+    #toast-container { position: fixed; top: 24px; right: 24px; z-index: 999; display: flex; flex-direction: column; gap: 10px; pointer-events: none; }
+    .toast { background: var(--surface); border: 2px solid var(--border); border-radius: var(--radius-sm); padding: 14px 18px; display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 14px; box-shadow: 0 8px 30px rgba(58,134,255,.12); animation: toastIn .4s cubic-bezier(.34,1.56,.64,1); max-width: 300px; }
+    @keyframes toastIn { from { opacity: 0; transform: translateX(60px) scale(.9); } to { opacity: 1; transform: translateX(0) scale(1); } }
     .toast.out { animation: toastOut .3s ease forwards; }
     @keyframes toastOut { to { opacity: 0; transform: translateX(60px); } }
     .toast-icon { font-size: 22px; flex-shrink: 0; }
     .toast.success { border-color: var(--accent); }
-    .toast.error   { border-color: var(--primary); }
-    .toast.info    { border-color: var(--blue); }
+    .toast.error { border-color: var(--primary); }
+    .toast.info { border-color: var(--blue); }
     .toast.warning { border-color: var(--secondary); }
 
-    /* ===== MODAL OVERLAY ===== */
-    .modal-overlay {
-      position: fixed; inset: 0; z-index: 100;
-      background: rgba(10,10,20,.85); backdrop-filter: blur(8px);
-      display: flex; align-items: center; justify-content: center;
-      padding: 16px;
-      opacity: 0; pointer-events: none; transition: opacity .3s;
-      overflow-y: auto;
-    }
+    /* MODAL */
+    .modal-overlay { position: fixed; inset: 0; z-index: 100; background: rgba(240,244,255,.7); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; padding: 16px; opacity: 0; pointer-events: none; transition: opacity .3s; overflow-y: auto; }
     .modal-overlay.show { opacity: 1; pointer-events: all; }
-    .modal {
-      background: var(--surface);
-      border: 2px solid var(--border);
-      border-radius: var(--radius);
-      padding: 24px 28px;
-      max-width: 440px; width: 100%;
-      max-height: calc(100dvh - 32px);
-      overflow-y: auto;
-      text-align: center;
-      transform: scale(.85);
-      transition: transform .4s cubic-bezier(.34,1.56,.64,1);
-      box-shadow: 0 20px 60px rgba(0,0,0,.6);
-      margin: auto;
-    }
+    .modal { background: var(--surface); border: 2px solid var(--border); border-radius: var(--radius); padding: 24px 28px; max-width: 440px; width: 100%; max-height: calc(100dvh - 32px); overflow-y: auto; text-align: center; transform: scale(.85); transition: transform .4s cubic-bezier(.34,1.56,.64,1); box-shadow: 0 20px 60px rgba(58,134,255,.15); margin: auto; }
     .modal-overlay.show .modal { transform: scale(1); }
     .modal-emoji { font-size: 48px; display: block; margin-bottom: 6px; animation: spin .6s cubic-bezier(.34,1.56,.64,1) .2s both; }
     @keyframes spin { from{transform:rotate(-20deg) scale(0)} to{transform:rotate(0) scale(1)} }
-    .modal-title {
-      font-family: 'Fredoka One', cursive;
-      font-size: 30px; margin-bottom: 4px;
-    }
+    .modal-title { font-family: 'Fredoka One', cursive; font-size: 30px; margin-bottom: 4px; }
     .modal-title.winner { color: var(--secondary); }
-    .modal-title.loser  { color: var(--primary); }
-    .modal-title.draw   { color: var(--blue); }
+    .modal-title.loser { color: var(--primary); }
+    .modal-title.draw { color: var(--blue); }
     .modal-sub { color: var(--muted); font-size: 14px; font-weight: 700; margin-bottom: 16px; }
-    .stats-grid {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 8px; margin-bottom: 16px;
-    }
-    .stat-box {
-      background: var(--surface2);
-      border: 2px solid var(--border);
-      border-radius: var(--radius-sm);
-      padding: 10px;
-    }
+    .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px; }
+    .stat-box { background: var(--surface2); border: 2px solid var(--border); border-radius: var(--radius-sm); padding: 10px; }
     .stat-val { font-family: 'Fredoka One', cursive; font-size: 26px; }
-    .stat-val.gold   { color: var(--secondary); }
-    .stat-val.blue   { color: var(--blue); }
-    .stat-val.green  { color: var(--accent); }
-    .stat-val.red    { color: var(--primary); }
+    .stat-val.gold { color: var(--secondary); }
+    .stat-val.blue { color: var(--blue); }
+    .stat-val.green { color: var(--accent); }
+    .stat-val.red { color: var(--primary); }
     .stat-label { font-size: 10px; font-weight: 900; color: var(--muted); letter-spacing: .08em; text-transform: uppercase; margin-top: 2px; }
 
-    /* ===== ELIMINATED OVERLAY ===== */
-    .elim-overlay {
-      position: fixed; inset: 0; z-index: 90;
-      background: rgba(255,107,107,.12); backdrop-filter: blur(2px);
-      pointer-events: none; opacity: 0; transition: opacity .5s;
-    }
-    .elim-overlay.show { opacity: 1; }
-
-    /* ===== COUNTDOWN ===== */
-    .countdown-display {
-      font-family: 'Fredoka One', cursive;
-      font-size: 120px; text-align: center;
-      color: var(--text);
-      text-shadow: 0 0 60px rgba(255,217,61,.6);
-      animation: countPop .5s cubic-bezier(.34,1.56,.64,1);
-    }
-    @keyframes countPop {
-      from { transform: scale(2); opacity: 0; }
-      to   { transform: scale(1); opacity: 1; }
-    }
-
-
-    /* ===== MUTE BUTTON ===== */
-    #mute-btn {
-      position: fixed; bottom: 24px; right: 24px; z-index: 50;
-      width: 48px; height: 48px; border-radius: 50%;
-      background: var(--surface); border: 2px solid var(--border);
-      cursor: pointer; font-size: 22px;
-      display: flex; align-items: center; justify-content: center;
-      box-shadow: 0 4px 16px rgba(0,0,0,.4);
-      transition: transform .2s, background .2s;
-    }
-    #mute-btn:hover { transform: scale(1.1); background: var(--surface2); }
-
-    /* ===== LEADERBOARD ===== */
+    /* LEADERBOARD */
     .leaderboard { list-style: none; margin-bottom: 14px; display: flex; flex-direction: column; gap: 6px; }
-    .lb-row {
-      display: flex; align-items: center; gap: 10px;
-      background: var(--surface2); border: 2px solid var(--border);
-      border-radius: var(--radius-sm); padding: 8px 12px;
-      font-weight: 800;
-    }
-    .lb-row.me { border-color: var(--secondary); background: rgba(255,217,61,.07); }
+    .lb-row { display: flex; align-items: center; gap: 10px; background: var(--surface2); border: 2px solid var(--border); border-radius: var(--radius-sm); padding: 8px 12px; font-weight: 800; }
+    .lb-row.me { border-color: var(--secondary); background: rgba(255,159,28,.06); }
     .lb-rank { font-family: 'Fredoka One', cursive; font-size: 20px; min-width: 28px; }
     .lb-name { flex: 1; font-size: 14px; }
     .lb-score { font-family: 'Fredoka One', cursive; font-size: 16px; color: var(--accent); }
     .lb-detail { font-size: 10px; color: var(--muted); font-weight: 700; }
 
-    /* ===== SCROLLBAR ===== */
+    /* COUNTDOWN */
+    .countdown-display { font-family: 'Fredoka One', cursive; font-size: 120px; text-align: center; color: var(--text); text-shadow: 0 0 40px rgba(255,159,28,.4); animation: countPop .5s cubic-bezier(.34,1.56,.64,1); }
+    @keyframes countPop { from { transform: scale(2); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+    /* MUTE */
+    #mute-btn { position: fixed; bottom: 24px; right: 24px; z-index: 50; width: 48px; height: 48px; border-radius: 50%; background: var(--surface); border: 2px solid var(--border); cursor: pointer; font-size: 22px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 16px rgba(58,134,255,.12); transition: transform .2s, background .2s; }
+    #mute-btn:hover { transform: scale(1.1); background: var(--surface2); }
+
+    /* SCROLLBAR */
     ::-webkit-scrollbar { width: 4px; }
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
-    .modal::-webkit-scrollbar { width: 4px; }
-    .modal::-webkit-scrollbar-track { background: transparent; }
-    .modal::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
 
-    /* ===== RESPONSIVE ===== */
-    /* ===== RESPONSIVE — TABLET (max 768px) ===== */
+    /* RESPONSIVE */
     @media (max-width: 768px) {
-      #app { padding: 16px; min-height: 100dvh; justify-content: center; }
-
+      #app { padding: 16px; }
       .logo-title { font-size: 40px; }
-      .logo-emoji { font-size: 52px; }
-
       #screen-game { max-width: 100%; }
-
-      .word-display { font-size: 40px; letter-spacing: .08em; }
-
-      .answer-input { font-size: 22px; padding: 14px 52px 14px 16px; }
-
+      .word-display { font-size: 40px; }
+      .answer-input { font-size: 22px; }
       .game-header { flex-wrap: wrap; gap: 8px; }
-
-      .opponents-grid {
-        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-      }
-
-      .stats-grid { grid-template-columns: 1fr 1fr; }
-
-      .modal { padding: 28px 20px; }
-      .modal-title { font-size: 28px; }
-      .modal-emoji { font-size: 56px; }
     }
-
-    /* ===== RESPONSIVE — MOBILE (max 480px) ===== */
     @media (max-width: 480px) {
-      #app { padding: 12px; min-height: 100dvh; justify-content: center; }
-
-      .screen { max-width: 100%; }
-      #screen-game { max-width: 100%; }
-
+      #app { padding: 12px; }
+      .screen, #screen-game { max-width: 100%; }
       .logo-title { font-size: 32px; }
       .logo-emoji { font-size: 44px; }
-      .logo-sub { font-size: 12px; }
-
       .card { padding: 18px 16px; border-radius: 14px; }
-
-      /* Room code */
-      .room-code-value { font-size: 32px; letter-spacing: .12em; }
-      .room-code-box { padding: 14px; }
-
-      /* Game word */
-      .word-display { font-size: 32px; letter-spacing: .06em; }
+      .room-code-value { font-size: 32px; }
+      .word-display { font-size: 30px; }
       .word-card { padding: 20px 16px; }
-      .word-label { font-size: 11px; }
-
-      /* Answer input */
       .answer-input { font-size: 20px; padding: 12px 48px 12px 14px; }
       .submit-btn { width: 36px; height: 36px; font-size: 16px; }
-
-      /* Timer */
       .timer-val { font-size: 20px; }
-      .timer-bar { height: 10px; }
-
-      /* Lives */
       .heart { font-size: 18px; }
-
-      /* Buttons */
       .btn { font-size: 17px; padding: 13px; }
       .btn-ghost { font-size: 13px; }
-
-      /* Game header */
-      .game-header { flex-wrap: wrap; gap: 6px; }
       .game-title { font-size: 18px; }
-      .game-round { font-size: 12px; padding: 4px 12px; }
-
-      /* Opponents */
-      .opponents-grid {
-        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-        gap: 8px;
-      }
-      .opponent-card { padding: 10px; }
-      .opponent-name { font-size: 13px; }
-
-      /* Modal */
-      .modal { padding: 24px 16px; }
-      .modal-title { font-size: 26px; }
-      .modal-emoji { font-size: 52px; }
-      .modal-sub { font-size: 14px; }
-      .stats-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
-      .stat-val { font-size: 26px; }
-      .stat-label { font-size: 10px; }
-
-      /* Player list */
-      .player-item { padding: 10px 12px; }
-      .player-avatar { width: 30px; height: 30px; font-size: 15px; }
-      .player-name { font-size: 14px; }
-
-      /* Section title */
-      .section-title { font-size: 18px; }
-
-      /* Toast */
+      .opponents-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 8px; }
       #toast-container { top: 12px; right: 12px; left: 12px; }
-      .toast { max-width: 100%; font-size: 13px; padding: 10px 14px; }
-
-      /* Mute button */
-      #mute-btn { bottom: 16px; right: 16px; width: 42px; height: 42px; font-size: 18px; }
-
-      /* Input fields */
+      .toast { max-width: 100%; font-size: 13px; }
+      #mute-btn { bottom: 16px; right: 16px; width: 42px; height: 42px; }
       .input { font-size: 15px; padding: 11px 14px; }
-
-      /* Leaderboard */
-      .lb-row { padding: 8px 10px; gap: 8px; }
-      .lb-rank { font-size: 18px; min-width: 26px; }
-      .lb-name { font-size: 13px; }
-      .lb-score { font-size: 15px; }
     }
-
-    /* ===== RESPONSIVE — SMALL MOBILE (max 360px) ===== */
     @media (max-width: 360px) {
       .logo-title { font-size: 28px; }
       .word-display { font-size: 26px; }
-      .room-code-value { font-size: 26px; letter-spacing: .08em; }
+      .room-code-value { font-size: 26px; }
       .answer-input { font-size: 17px; }
       .card { padding: 14px 12px; }
-      .btn { font-size: 15px; padding: 11px; }
     }
   </style>
 </head>
 <body>
 
-<!-- Toast container -->
 <div id="toast-container"></div>
-
-<!-- Eliminated overlay -->
-<div class="elim-overlay" id="elim-overlay"></div>
 
 <!-- Game over modal -->
 <div class="modal-overlay" id="modal-overlay">
-  <div class="modal" id="modal">
+  <div class="modal">
     <span class="modal-emoji" id="modal-emoji">🏆</span>
     <div class="modal-title" id="modal-title">Menang!</div>
     <div class="modal-sub" id="modal-sub">Kamu juaranya hari ini!</div>
     <div class="stats-grid">
-      <div class="stat-box">
-        <div class="stat-val gold" id="stat-correct">0</div>
-        <div class="stat-label">Kata Benar</div>
-      </div>
-      <div class="stat-box">
-        <div class="stat-val red" id="stat-wrong">0</div>
-        <div class="stat-label">Kata Salah</div>
-      </div>
-      <div class="stat-box">
-        <div class="stat-val green" id="stat-lives">3</div>
-        <div class="stat-label">Nyawa Sisa</div>
-      </div>
-      <div class="stat-box">
-        <div class="stat-val blue" id="stat-time">0s</div>
-        <div class="stat-label">Total Waktu</div>
-      </div>
+      <div class="stat-box"><div class="stat-val gold" id="stat-correct">0</div><div class="stat-label">Kata Benar</div></div>
+      <div class="stat-box"><div class="stat-val red" id="stat-wrong">0</div><div class="stat-label">Kata Salah</div></div>
+      <div class="stat-box"><div class="stat-val green" id="stat-lives">3</div><div class="stat-label">Nyawa Sisa</div></div>
+      <div class="stat-box"><div class="stat-val blue" id="stat-time">0s</div><div class="stat-label">Total Waktu</div></div>
     </div>
-
     <div id="leaderboard-section" style="margin-bottom:14px;display:none">
-      <div style="font-family:'Fredoka One',cursive;font-size:15px;color:var(--muted);margin-bottom:8px;text-align:left">🏆 Leaderboard</div>
+      <div style="font-family:'Fredoka One',cursive;font-size:15px;color:var(--muted);margin-bottom:8px;text-align:left">Leaderboard</div>
       <ul class="leaderboard" id="leaderboard-list"></ul>
     </div>
-    <button class="btn btn-primary" id="btn-play-again">Main Lagi! 🎮</button>
+    <button class="btn btn-primary" id="btn-play-again">Main Lagi!</button>
     <button class="btn btn-ghost" id="btn-back-lobby" style="margin-top:10px">Kembali ke Lobby</button>
   </div>
 </div>
-
 
 <button id="mute-btn" title="Mute/Unmute">🔊</button>
 
 <div id="app">
 
-  <!-- ===== SCREEN: HOME ===== -->
+  <!-- HOME (AUTH) -->
   <div class="screen active" id="screen-home">
     <div class="logo">
       <span class="logo-emoji">⌨️</span>
       <div class="logo-title">TypeRush!</div>
-      <div class="logo-sub">⚡ Siapa yang paling cepat ngetik?</div>
+      <div class="logo-sub">Siapa yang paling cepat ngetik?</div>
     </div>
     <div class="card">
-      <div class="field">
-        <label>Nama Kamu</label>
-        <input class="input" id="input-username" type="text" placeholder="Masukkan nama..." maxlength="16" />
+      <div class="auth-tabs">
+        <button class="auth-tab active" id="tab-login" onclick="switchAuthTab('login')">Login</button>
+        <button class="auth-tab" id="tab-register" onclick="switchAuthTab('register')">Daftar</button>
       </div>
-      <button class="btn btn-primary" id="btn-go-create">🏠 Buat Room</button>
-      <div class="divider">atau</div>
-      <button class="btn btn-secondary" id="btn-go-join">🔑 Masuk Room</button>
+      <!-- LOGIN -->
+      <div class="auth-form active" id="form-login">
+        <div class="field">
+          <label>Username</label>
+          <input class="input" id="input-login-username" type="text" placeholder="Masukkan username..." maxlength="16" />
+        </div>
+        <div class="field">
+          <label>Password</label>
+          <input class="input" id="input-login-password" type="password" placeholder="Masukkan password..." maxlength="32" />
+        </div>
+        <button class="btn btn-primary" id="btn-login">Login</button>
+      </div>
+      <!-- REGISTER -->
+      <div class="auth-form" id="form-register">
+        <div class="field">
+          <label>Username</label>
+          <input class="input" id="input-reg-username" type="text" placeholder="Minimal 3 karakter..." maxlength="16" />
+          <div class="input-hint">Minimal 3 karakter</div>
+        </div>
+        <div class="field">
+          <label>Email</label>
+          <input class="input" id="input-reg-email" type="email" placeholder="Masukkan email aktif..." maxlength="100" />
+          <div class="input-hint">Gunakan email aktif</div>
+        </div>
+        <div class="field">
+          <label>Password</label>
+          <input class="input" id="input-reg-password" type="password" placeholder="Minimal 4 karakter..." maxlength="32" />
+          <div class="input-hint">Minimal 4 karakter</div>
+        </div>
+        <button class="btn btn-secondary" id="btn-register">Daftar Sekarang</button>
+      </div>
     </div>
   </div>
 
-  <!-- ===== SCREEN: CREATE ROOM ===== -->
+  <!-- LOBBY -->
+  <div class="screen" id="screen-lobby">
+    <div class="logo">
+      <span class="logo-emoji">⌨️</span>
+      <div class="logo-title">TypeRush!</div>
+      <div class="logo-sub">Siapa yang paling cepat ngetik?</div>
+    </div>
+    <div class="card">
+      <div class="user-info-bar">
+        <div class="user-avatar">👤</div>
+        <div class="user-name" id="lobby-username">Player</div>
+        <button class="btn-logout" id="btn-logout">Logout</button>
+      </div>
+      <button class="btn btn-primary" id="btn-go-create">Buat Room</button>
+      <div class="divider">atau</div>
+      <button class="btn btn-secondary" id="btn-go-join">Masuk Room</button>
+    </div>
+  </div>
+
+  <!-- CREATE ROOM -->
   <div class="screen" id="screen-create">
     <div class="logo">
       <span class="logo-emoji" style="font-size:44px;animation:none">🏗️</span>
@@ -738,12 +369,12 @@
           <option value="8">8 Pemain</option>
         </select>
       </div>
-      <button class="btn btn-primary" id="btn-create-room">✨ Buat Room Sekarang!</button>
-      <button class="btn btn-ghost" id="btn-back-home-create" style="margin-top:10px"> Kembali</button>
+      <button class="btn btn-primary" id="btn-create-room">Buat Room Sekarang</button>
+      <button class="btn btn-ghost" id="btn-back-home-create" style="margin-top:10px">Kembali</button>
     </div>
   </div>
 
-  <!-- ===== SCREEN: JOIN ROOM ===== -->
+  <!-- JOIN ROOM -->
   <div class="screen" id="screen-join">
     <div class="logo">
       <span class="logo-emoji" style="font-size:44px;animation:none">🔑</span>
@@ -752,62 +383,45 @@
     <div class="card">
       <div class="field">
         <label>Kode Room</label>
-        <input class="input" id="input-room-code" type="text" placeholder="Contoh: AB3X9"
-          maxlength="5" style="text-transform:uppercase;text-align:center;font-family:'Fredoka One',cursive;font-size:28px;letter-spacing:.18em" />
+        <input class="input" id="input-room-code" type="text" placeholder="Contoh: AB3X9" maxlength="5" style="text-transform:uppercase;text-align:center;font-family:'Fredoka One',cursive;font-size:28px;letter-spacing:.18em" />
       </div>
-      <button class="btn btn-secondary" id="btn-join-room">🚀 Masuk Room!</button>
-      <button class="btn btn-ghost" id="btn-back-home-join" style="margin-top:10px">← Kembali</button>
+      <button class="btn btn-secondary" id="btn-join-room">Masuk Room</button>
+      <button class="btn btn-ghost" id="btn-back-home-join" style="margin-top:10px">Kembali</button>
     </div>
   </div>
 
-  <!-- ===== SCREEN: WAITING ROOM ===== -->
+  <!-- WAITING ROOM -->
   <div class="screen" id="screen-waiting">
     <div class="card">
-      <div class="section-title">🏠 Ruang Tunggu</div>
-
+      <div class="section-title">Ruang Tunggu</div>
       <div class="room-code-box" id="room-code-box" title="Klik untuk copy">
-        <div class="room-code-label">Kode Room — Klik untuk copy 📋</div>
+        <div class="room-code-label">Kode Room — Klik untuk copy</div>
         <div class="room-code-value" id="display-room-code">XXXXX</div>
         <div class="room-code-hint">Bagikan kode ini ke temanmu!</div>
       </div>
-
-      <div class="slots-info">
-        Pemain: <span id="display-player-count">1</span> / <span id="display-capacity">2</span>
-      </div>
-
+      <div class="slots-info">Pemain: <span id="display-player-count">1</span> / <span id="display-capacity">2</span></div>
       <ul class="player-list" id="player-list"></ul>
-
-      <button class="btn btn-success" id="btn-start-game" style="display:none">
-        🎮 Mulai Game!
-      </button>
-      <div id="waiting-hint" style="text-align:center;color:var(--muted);font-size:14px;font-weight:700">
-        ⏳ Menunggu pemain lain bergabung...
-      </div>
+      <button class="btn btn-success" id="btn-start-game" style="display:none">Mulai Game!</button>
+      <button class="btn btn-ghost" id="btn-disband-room" style="display:none;margin-top:10px;border-color:#ff4757;color:#ff4757">Bubarkan Room</button>
+      <div id="waiting-hint" style="text-align:center;color:var(--muted);font-size:14px;font-weight:700">Menunggu pemain lain bergabung...</div>
     </div>
   </div>
 
-  <!-- ===== SCREEN: COUNTDOWN ===== -->
+  <!-- COUNTDOWN -->
   <div class="screen" id="screen-countdown">
     <div style="text-align:center">
-      <div style="font-family:'Fredoka One',cursive;font-size:22px;color:var(--muted);margin-bottom:16px">
-        Game dimulai dalam...
-      </div>
+      <div style="font-family:'Fredoka One',cursive;font-size:22px;color:var(--muted);margin-bottom:16px">Game dimulai dalam...</div>
       <div class="countdown-display" id="countdown-num">3</div>
-      <div style="font-family:'Fredoka One',cursive;font-size:18px;color:var(--secondary);margin-top:16px">
-        Siapkan jari-jarimu! 
-      </div>
+      <div style="font-family:'Fredoka One',cursive;font-size:18px;color:var(--secondary);margin-top:16px">Siapkan jari-jarimu!</div>
     </div>
   </div>
 
-  <!-- ===== SCREEN: GAME ===== -->
+  <!-- GAME -->
   <div class="screen" id="screen-game">
-
     <div class="game-header">
-      <div class="game-title">⌨️ TypeRush!</div>
+      <div class="game-title">TypeRush!</div>
       <div class="game-round" id="game-round">Kata #1</div>
     </div>
-
-    <!-- My zone -->
     <div class="card" style="margin-bottom:16px">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
         <div>
@@ -820,61 +434,45 @@
           <span class="heart">❤️</span>
         </div>
       </div>
-
-      <!-- Word -->
-      <div class="word-card">
-        <div class="word-label">🔀 Susun & ketik kata yang benar!</div>
+      <div class="word-card" id="my-word-card">
+        <div class="word-label">Susun & ketik kata yang benar!</div>
         <div class="word-display" id="word-display">kucing</div>
       </div>
-
-      <!-- Timer -->
-      <div class="timer-wrap">
+      <div class="timer-wrap" id="my-timer-wrap">
         <div class="timer-row">
-          <span>⏱️ Waktu</span>
+          <span>Waktu</span>
           <span class="timer-val"><span id="timer-val">30</span>s</span>
         </div>
         <div class="timer-bar">
           <div class="timer-fill" id="timer-fill" style="width:100%"></div>
         </div>
       </div>
-
-      <!-- Input -->
-      <div class="answer-wrap">
+      <div class="answer-wrap" id="my-answer-wrap">
         <input class="answer-input" id="answer-input" type="text" placeholder="Ketik di sini..." autocomplete="off" autocorrect="off" spellcheck="false" />
         <button class="submit-btn" id="btn-submit-answer">➤</button>
       </div>
-      <div style="text-align:center;font-size:12px;color:var(--muted);font-weight:700">
+      <div id="my-submit-hint" style="text-align:center;font-size:12px;color:var(--muted);font-weight:700">
         Tekan <kbd style="background:var(--surface2);border:1px solid var(--border);border-radius:4px;padding:1px 6px">Enter</kbd> untuk submit
       </div>
     </div>
-
-    <!-- Opponents -->
     <div class="opponents-grid" id="opponents-grid"></div>
-
   </div>
 
 </div>
 
 <script>
-  // ===== HELPERS =====
   function showScreen(id) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.getElementById(id).classList.add('active');
-    // Selalu bersihkan overlay blur saat pindah screen
-    document.getElementById('elim-overlay').classList.remove('show');
-    document.getElementById('answer-input') && (document.getElementById('answer-input').disabled = false);
   }
 
-  function showToast(msg, type = 'info', emoji = '💬') {
+  function showToast(msg, type = 'info', emoji = '') {
     const c = document.getElementById('toast-container');
     const t = document.createElement('div');
     t.className = `toast ${type}`;
-    t.innerHTML = `<span class="toast-icon">${emoji}</span><span>${msg}</span>`;
+    t.innerHTML = emoji ? `<span class="toast-icon">${emoji}</span><span>${msg}</span>` : `<span>${msg}</span>`;
     c.appendChild(t);
-    setTimeout(() => {
-      t.classList.add('out');
-      setTimeout(() => t.remove(), 300);
-    }, 3000);
+    setTimeout(() => { t.classList.add('out'); setTimeout(() => t.remove(), 300); }, 3000);
   }
 
   function showModal({ emoji, title, titleClass, sub, correct, wrong, lives, time }) {
@@ -889,68 +487,97 @@
     document.getElementById('modal-overlay').classList.add('show');
   }
 
-  function copyToClipboard(text) {
-    navigator.clipboard.writeText(text).then(() => {
-      showToast('Kode room disalin!', 'success', '📋');
-    });
-  }
-
-  // ===== STATE =====
   let state = {
-    username: '',
-    roomCode: '',
-    isHost: false,
-    playerId: null,
-    currentWord: '',
-    lives: 3,
-    wordCount: 0,
-    correctCount: 0,
-    wrongCount: 0,
-    timerInterval: null,
-    timerSeconds: 30,
-    gameStartTime: null,
-    eliminated: false,
-    ws: null,
+    username: '', sessionId: null, loggedIn: false,
+    roomCode: '', isHost: false, playerId: null,
+    currentWord: '', lives: 3, wordCount: 0,
+    correctCount: 0, wrongCount: 0, timerInterval: null,
+    gameStartTime: null, eliminated: false, ws: null,
   };
 
-  // ===== UI BINDINGS (demo / static) =====
+  function switchAuthTab(tab) {
+    document.getElementById('tab-login').classList.toggle('active', tab === 'login');
+    document.getElementById('tab-register').classList.toggle('active', tab === 'register');
+    document.getElementById('form-login').classList.toggle('active', tab === 'login');
+    document.getElementById('form-register').classList.toggle('active', tab === 'register');
+  }
 
-  // Home
+  document.getElementById('btn-login').addEventListener('click', () => {
+    const username = document.getElementById('input-login-username').value.trim();
+    const password = document.getElementById('input-login-password').value.trim();
+    if (!username || !password) { showToast('Isi username dan password!', 'error', '❌'); return; }
+    connectWebSocket(() => {
+      state.ws.send(JSON.stringify({ type: 'login', payload: { username, password } }));
+    });
+  });
+  document.getElementById('input-login-password').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') document.getElementById('btn-login').click();
+  });
+  document.getElementById('input-login-username').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') document.getElementById('input-login-password').focus();
+  });
+
+  document.getElementById('btn-register').addEventListener('click', () => {
+    const username = document.getElementById('input-reg-username').value.trim();
+    const email = document.getElementById('input-reg-email').value.trim();
+    const password = document.getElementById('input-reg-password').value.trim();
+    if (!username || !email || !password) { showToast('Isi semua field!', 'error', '❌'); return; }
+    connectWebSocket(() => {
+      state.ws.send(JSON.stringify({ type: 'register', payload: { username, email, password } }));
+    });
+  });
+  document.getElementById('input-reg-password').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') document.getElementById('btn-register').click();
+  });
+
+  document.getElementById('btn-logout').addEventListener('click', () => {
+    state.sessionId = null; state.loggedIn = false; state.username = '';
+    if (state.ws) { state.ws.close(); state.ws = null; }
+    showToast('Berhasil logout!', 'info');
+    showScreen('screen-home');
+  });
+
   document.getElementById('btn-go-create').addEventListener('click', () => {
-    const name = document.getElementById('input-username').value.trim();
-    if (!name) { showToast('Masukkan nama dulu ya!', 'error', '😅'); return; }
-    state.username = name;
+    if (!state.loggedIn) { showToast('Login dulu ya!', 'error'); return; }
     showScreen('screen-create');
   });
-
   document.getElementById('btn-go-join').addEventListener('click', () => {
-    const name = document.getElementById('input-username').value.trim();
-    if (!name) { showToast('Masukkan nama dulu ya!', 'error', '😅'); return; }
-    state.username = name;
+    if (!state.loggedIn) { showToast('Login dulu ya!', 'error'); return; }
     showScreen('screen-join');
   });
+  document.getElementById('btn-back-home-create').addEventListener('click', () => showScreen('screen-lobby'));
+  document.getElementById('btn-back-home-join').addEventListener('click', () => showScreen('screen-lobby'));
 
-  document.getElementById('btn-back-home-create').addEventListener('click', () => showScreen('screen-home'));
-  document.getElementById('btn-back-home-join').addEventListener('click', () => showScreen('screen-home'));
-
-  // Room code input auto-uppercase
-  document.getElementById('input-room-code').addEventListener('input', function() {
-    this.value = this.value.toUpperCase();
-  });
-
-  // Copy room code
+  document.getElementById('input-room-code').addEventListener('input', function() { this.value = this.value.toUpperCase(); });
   document.getElementById('room-code-box').addEventListener('click', () => {
-    copyToClipboard(state.roomCode || 'XXXXX');
+    navigator.clipboard.writeText(state.roomCode).then(() => showToast('Kode room disalin!', 'success', '📋'));
   });
 
-  // Start game button
+  document.getElementById('btn-create-room').addEventListener('click', () => {
+    const capacity = parseInt(document.getElementById('select-capacity').value);
+    sendWS('create_room', { sessionId: state.sessionId, capacity });
+  });
+
+  document.getElementById('btn-join-room').addEventListener('click', () => {
+    const code = document.getElementById('input-room-code').value.trim().toUpperCase();
+    if (code.length !== 5) { showToast('Kode room harus 5 karakter!', 'error', '❌'); return; }
+    sendWS('join_room', { sessionId: state.sessionId, roomCode: code });
+  });
+  document.getElementById('input-room-code').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') document.getElementById('btn-join-room').click();
+  });
+
   document.getElementById('btn-start-game').addEventListener('click', () => {
-    if (state.ws) {
-      state.ws.send(JSON.stringify({ type: 'start_game', payload: { roomCode: state.roomCode } }));
-    }
+    sendWS('start_game', { roomCode: state.roomCode });
   });
 
-  // Answer input
+  document.getElementById('btn-disband-room').addEventListener('click', () => {
+    if (!state.isHost) return;
+    if (!confirm('Yakin mau bubarkan room? Semua pemain akan dikeluarkan.')) return;
+    sendWS('disband_room', { roomCode: state.roomCode });
+    resetToHome();
+  });
+
   document.getElementById('answer-input').addEventListener('keydown', (e) => {
     if (e.key === 'Enter') submitAnswer();
   });
@@ -960,108 +587,81 @@
     const input = document.getElementById('answer-input');
     const answer = input.value.trim();
     if (!answer || state.eliminated) return;
-    if (state.ws) {
-      state.ws.send(JSON.stringify({ type: 'submit_answer', payload: { answer, roomCode: state.roomCode } }));
-    }
+    sendWS('submit_answer', { answer, roomCode: state.roomCode });
     input.value = '';
   }
 
-  // Modal buttons
   document.getElementById('btn-play-again').addEventListener('click', () => {
     document.getElementById('modal-overlay').classList.remove('show');
-    // Siapapun bisa klik main lagi — server yang handle koordinasi
-    if (state.ws && state.ws.readyState === WebSocket.OPEN) {
-      state.ws.send(JSON.stringify({ type: 'play_again', payload: { roomCode: state.roomCode } }));
-    }
-    // Tidak langsung pindah screen — tunggu konfirmasi dari server (game_restarted)
+    sendWS('play_again', { roomCode: state.roomCode });
   });
-
   document.getElementById('btn-back-lobby').addEventListener('click', () => {
     document.getElementById('modal-overlay').classList.remove('show');
     stopTimer();
     Audio.stopTick();
-    // Beritahu server player keluar dari room
-    if (state.ws && state.ws.readyState === WebSocket.OPEN) {
-      state.ws.send(JSON.stringify({ type: 'leave_room', payload: { roomCode: state.roomCode } }));
-    }
+    sendWS('leave_room', { roomCode: state.roomCode });
     resetToHome();
   });
 
-  // Create room (demo)
-  document.getElementById('btn-create-room').addEventListener('click', () => {
-    const capacity = parseInt(document.getElementById('select-capacity').value);
-    connectWebSocket(() => {
-      state.ws.send(JSON.stringify({
-        type: 'create_room',
-        payload: { username: state.username, capacity }
-      }));
-    });
-  });
-
-  // Join room (demo)
-  document.getElementById('btn-join-room').addEventListener('click', () => {
-    const code = document.getElementById('input-room-code').value.trim().toUpperCase();
-    if (code.length !== 5) { showToast('Kode room harus 5 karakter!', 'error', '❌'); return; }
-    connectWebSocket(() => {
-      state.ws.send(JSON.stringify({
-        type: 'join_room',
-        payload: { username: state.username, roomCode: code }
-      }));
-    });
-  });
-
-  // ===== RESET TO HOME =====
   function resetToHome() {
     stopTimer();
     Audio.stopTick();
-    state.roomCode = '';
-    state.isHost = false;
-    state.playerId = null;
-    state.eliminated = false;
-    state.lives = 3;
-    state.wordCount = 0;
-    state.correctCount = 0;
-    state.wrongCount = 0;
-    state.gameStartTime = null;
+    hideSpectatorBanner();
+    state.roomCode = ''; state.isHost = false; state.playerId = null;
+    state.eliminated = false; state.lives = 3; state.wordCount = 0;
+    state.correctCount = 0; state.wrongCount = 0; state.gameStartTime = null;
     document.getElementById('modal-overlay').classList.remove('show');
-    document.getElementById('elim-overlay').classList.remove('show');
-    if (document.getElementById('answer-input')) {
-      document.getElementById('answer-input').disabled = false;
-    }
-    // Reset waiting room UI
     document.getElementById('btn-start-game').style.display = 'none';
+    document.getElementById('btn-disband-room').style.display = 'none';
     document.getElementById('waiting-hint').style.display = 'block';
-    document.getElementById('waiting-hint').textContent = '⏳ Menunggu pemain lain bergabung...';
-    showScreen('screen-home');
+    document.getElementById('waiting-hint').textContent = 'Menunggu pemain lain bergabung...';
+    document.getElementById('answer-input').disabled = false;
+    document.getElementById('btn-submit-answer').disabled = false;
+    if (state.loggedIn) showScreen('screen-lobby');
+    else showScreen('screen-home');
   }
 
-  // ===== WEBSOCKET =====
   function connectWebSocket(onOpen) {
+    if (state.ws && state.ws.readyState === WebSocket.OPEN) { if (onOpen) onOpen(); return; }
     const protocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
     const ws = new WebSocket(`${protocol}//${location.host}`);
     state.ws = ws;
-
-    ws.onopen = () => {
-      if (onOpen) onOpen();
-    };
-
-    ws.onmessage = (event) => {
-      const msg = JSON.parse(event.data);
-      handleMessage(msg);
-    };
-
-    ws.onclose = () => {
-      showToast('Koneksi terputus...', 'error', '😢');
-    };
-
-    ws.onerror = () => {
-      showToast('Gagal terhubung ke server!', 'error', '❌');
-    };
+    ws.onopen = () => { if (onOpen) onOpen(); };
+    ws.onmessage = (e) => { handleMessage(JSON.parse(e.data)); };
+    ws.onclose = () => { if (state.loggedIn) showToast('Koneksi terputus...', 'error'); state.ws = null; };
+    ws.onerror = () => showToast('Gagal terhubung ke server!', 'error');
   }
 
-  // ===== MESSAGE HANDLER =====
+  function sendWS(type, payload = {}) {
+    if (!state.ws || state.ws.readyState !== WebSocket.OPEN) {
+      connectWebSocket(() => state.ws.send(JSON.stringify({ type, payload })));
+    } else {
+      state.ws.send(JSON.stringify({ type, payload }));
+    }
+  }
+
   function handleMessage({ type, payload }) {
     switch (type) {
+
+      case 'login_success': {
+        state.sessionId = payload.sessionId;
+        state.username = payload.username;
+        state.loggedIn = true;
+        document.getElementById('lobby-username').textContent = payload.username;
+        showToast(`Selamat datang, ${payload.username}!`, 'success');
+        showScreen('screen-lobby');
+        break;
+      }
+
+      case 'register_success': {
+        showToast('Registrasi berhasil! Silakan login.', 'success', '✅');
+        switchAuthTab('login');
+        document.getElementById('input-login-username').value = document.getElementById('input-reg-username').value;
+        document.getElementById('input-reg-username').value = '';
+        document.getElementById('input-reg-email').value = '';
+        document.getElementById('input-reg-password').value = '';
+        break;
+      }
 
       case 'room_created': {
         state.roomCode = payload.roomCode;
@@ -1070,8 +670,11 @@
         document.getElementById('display-room-code').textContent = payload.roomCode;
         document.getElementById('display-capacity').textContent = payload.capacity;
         renderPlayerList(payload.players, payload.capacity);
+        document.getElementById('btn-disband-room').style.display = 'block';
+        document.getElementById('btn-start-game').style.display = 'none';
+        document.getElementById('waiting-hint').style.display = 'block';
         showScreen('screen-waiting');
-        showToast(`Room ${payload.roomCode} dibuat!`, 'success', '🎉');
+        showToast(`Room ${payload.roomCode} dibuat!`, 'success');
         break;
       }
 
@@ -1082,14 +685,16 @@
         document.getElementById('display-room-code').textContent = payload.roomCode;
         document.getElementById('display-capacity').textContent = payload.capacity;
         renderPlayerList(payload.players, payload.capacity);
+        document.getElementById('btn-disband-room').style.display = 'none';
+        document.getElementById('btn-start-game').style.display = 'none';
         showScreen('screen-waiting');
-        showToast(`Berhasil masuk room ${payload.roomCode}!`, 'success', '🎊');
+        showToast(`Berhasil masuk room ${payload.roomCode}!`, 'success');
         break;
       }
 
       case 'player_joined': {
         renderPlayerList(payload.players, payload.capacity);
-        showToast(`${payload.username} bergabung!`, 'info', '👋');
+        if (payload.username) showToast(`${payload.username} bergabung!`, 'info', '👋');
         break;
       }
 
@@ -1100,7 +705,7 @@
           document.getElementById('waiting-hint').style.display = 'none';
           showToast('Room penuh! Kamu bisa mulai game.', 'success', '✅');
         } else {
-          showToast('Room penuh! Menunggu host memulai...', 'info', '⏳');
+          showToast('Room penuh! Menunggu host memulai...', 'info');
         }
         break;
       }
@@ -1109,13 +714,10 @@
         startCountdown(() => {
           showScreen('screen-game');
           document.getElementById('game-my-name').textContent = state.username;
-          state.eliminated = false;
-          state.wordCount = 0;
-          state.correctCount = 0;
-          state.wrongCount = 0;
-          state.lives = 3;
-          state.gameStartTime = Date.now();
-          document.getElementById('elim-overlay').classList.remove('show');
+          state.eliminated = false; state.wordCount = 0;
+          state.correctCount = 0; state.wrongCount = 0;
+          state.lives = 3; state.gameStartTime = Date.now();
+          hideSpectatorBanner();
           renderLives(3);
         });
         break;
@@ -1127,13 +729,11 @@
         document.getElementById('game-round').textContent = `Kata #${state.wordCount}`;
         document.getElementById('word-display').textContent = payload.word;
         document.getElementById('word-display').style.animation = 'none';
-        requestAnimationFrame(() => {
-          document.getElementById('word-display').style.animation = 'wordPop .4s cubic-bezier(.34,1.56,.64,1)';
-        });
+        requestAnimationFrame(() => { document.getElementById('word-display').style.animation = 'wordPop .4s cubic-bezier(.34,1.56,.64,1)'; });
         document.getElementById('answer-input').value = '';
-        document.getElementById('answer-input').focus();
+        if (!state.eliminated) document.getElementById('answer-input').focus();
         Audio.newWord();
-        startTimer(payload.timeLimit || 20);
+        startTimer(payload.timeLimit || 30);
         break;
       }
 
@@ -1143,7 +743,7 @@
           state.correctCount++;
           input.classList.add('correct');
           Audio.correct();
-          showToast('Benar! 🎉', 'success', '✅');
+          showToast('Benar!', 'success', '✅');
           setTimeout(() => input.classList.remove('correct'), 500);
         } else {
           state.wrongCount++;
@@ -1159,8 +759,8 @@
         if (payload.playerId === state.playerId) {
           state.lives = payload.lives;
           renderLives(payload.lives);
-          if (payload.reason === 'wrong') showToast(`Jawaban salah! -1 nyawa 💔`, 'warning', '💔');
-          if (payload.reason === 'timeout') showToast(`Waktu habis! -1 nyawa ⏰`, 'warning', '⏰');
+          if (payload.reason === 'wrong') showToast('Jawaban salah! -1 nyawa', 'warning', '💔');
+          if (payload.reason === 'timeout') showToast('Waktu habis! -1 nyawa', 'warning', '⏰');
         } else {
           updateOpponentLives(payload.playerId, payload.lives);
         }
@@ -1172,13 +772,14 @@
           state.eliminated = true;
           stopTimer();
           Audio.stopTick();
-            Audio.eliminated();
-          document.getElementById('elim-overlay').classList.add('show');
+          Audio.eliminated();
           document.getElementById('answer-input').disabled = true;
-          showToast('Kamu tereliminasi! 😢', 'error', '💀');
+          document.getElementById('btn-submit-answer').disabled = true;
+          showSpectatorBanner();
+          showToast('Kamu tereliminasi! Tonton saja dulu', 'error', '💀');
         } else {
           updateOpponentEliminated(payload.playerId, payload.username);
-          showToast(`${payload.username} tereliminasi! 💀`, 'warning', '👋');
+          showToast(`${payload.username} tereliminasi!`, 'warning');
         }
         break;
       }
@@ -1189,26 +790,16 @@
         const elapsed = Math.floor((Date.now() - (state.gameStartTime || Date.now())) / 1000);
         const isWinner = payload.winnerId === state.playerId;
         const isDraw = payload.isDraw;
-        // Update leaderboard data
         if (payload.leaderboard) renderLeaderboard(payload.leaderboard, state.playerId);
         if (isDraw) {
           Audio.lose();
-          showModal({ emoji: '🤝', title: 'Draw!', titleClass: 'draw',
-            sub: 'Kalian sama-sama kuat!',
-            correct: state.correctCount, wrong: state.wrongCount,
-            lives: state.lives, time: `${elapsed}s` });
+          showModal({ emoji: '🤝', title: 'Draw!', titleClass: 'draw', sub: 'Kalian sama-sama kuat!', correct: state.correctCount, wrong: state.wrongCount, lives: state.lives, time: `${elapsed}s` });
         } else if (isWinner) {
           Audio.win();
-          showModal({ emoji: '🏆', title: 'Menang!', titleClass: 'winner',
-            sub: 'Kamu juaranya hari ini! Luar biasa!',
-            correct: state.correctCount, wrong: state.wrongCount,
-            lives: state.lives, time: `${elapsed}s` });
+          showModal({ emoji: '🏆', title: 'Menang!', titleClass: 'winner', sub: 'Kamu juaranya hari ini! Luar biasa!', correct: state.correctCount, wrong: state.wrongCount, lives: state.lives, time: `${elapsed}s` });
         } else {
           Audio.lose();
-          showModal({ emoji: '😢', title: 'Kalah!', titleClass: 'loser',
-            sub: `${payload.winnerName} terlalu tangguh buatmu...`,
-            correct: state.correctCount, wrong: state.wrongCount,
-            lives: state.lives, time: `${elapsed}s` });
+          showModal({ emoji: '😢', title: 'Kalah!', titleClass: 'loser', sub: `${payload.winnerName} terlalu tangguh buatmu...`, correct: state.correctCount, wrong: state.wrongCount, lives: state.lives, time: `${elapsed}s` });
         }
         break;
       }
@@ -1219,25 +810,21 @@
       }
 
       case 'player_disconnected': {
-        showToast(`${payload.username} keluar dari game! 👋`, 'warning', '🚪');
+        showToast(`${payload.username} keluar dari game!`, 'warning', '🚪');
         break;
       }
 
       case 'room_disbanded': {
-        // Host membubarkan room → semua pemain balik ke home
-        stopTimer();
-        Audio.stopTick();
-        showToast('Host membubarkan room. Kamu dikembalikan ke lobby.', 'warning', '🏠');
+        stopTimer(); Audio.stopTick();
+        showToast('Host membubarkan room. Kamu dikembalikan ke lobby.', 'warning');
         setTimeout(() => resetToHome(), 1500);
         break;
       }
 
       case 'room_player_update': {
-        // Update daftar pemain di waiting room
         renderPlayerList(payload.players, payload.capacity);
         document.getElementById('display-player-count').textContent = payload.players.length;
         document.getElementById('display-capacity').textContent = payload.capacity;
-        // Cek apakah host perlu tampilkan tombol start
         const nowFull = payload.players.length >= payload.capacity;
         if (state.isHost && nowFull) {
           document.getElementById('btn-start-game').style.display = 'block';
@@ -1245,7 +832,7 @@
         } else {
           document.getElementById('btn-start-game').style.display = 'none';
           document.getElementById('waiting-hint').style.display = 'block';
-          document.getElementById('waiting-hint').textContent = '⏳ Menunggu pemain lain bergabung...';
+          document.getElementById('waiting-hint').textContent = 'Menunggu pemain lain bergabung...';
         }
         break;
       }
@@ -1253,54 +840,43 @@
       case 'host_changed': {
         if (payload.newHostId === state.playerId) {
           state.isHost = true;
-          showToast('Kamu sekarang jadi Host! 👑', 'info', '👑');
-          // Tampilkan tombol start jika room sudah penuh
+          document.getElementById('btn-disband-room').style.display = 'block';
+          showToast('Kamu sekarang jadi Host!', 'info', '👑');
           const countEl = document.getElementById('display-player-count');
           const capEl = document.getElementById('display-capacity');
-          if (countEl && capEl && parseInt(countEl.textContent) >= parseInt(capEl.textContent)) {
+          if (parseInt(countEl.textContent) >= parseInt(capEl.textContent)) {
             document.getElementById('btn-start-game').style.display = 'block';
             document.getElementById('waiting-hint').style.display = 'none';
           }
         } else {
-          showToast(`${payload.newHostName} jadi Host baru! 👑`, 'info', '👑');
+          document.getElementById('btn-disband-room').style.display = 'none';
+          showToast(`${payload.newHostName} jadi Host baru!`, 'info', '👑');
         }
         break;
       }
 
       case 'game_restarted': {
-        // Reset local state
-        stopTimer();
-        Audio.stopTick();
-        state.eliminated = false;
-        state.lives = 3;
-        state.wordCount = 0;
-        state.correctCount = 0;
-        state.wrongCount = 0;
+        stopTimer(); Audio.stopTick();
+        state.eliminated = false; state.lives = 3;
+        state.wordCount = 0; state.correctCount = 0; state.wrongCount = 0;
+        hideSpectatorBanner();
         document.getElementById('modal-overlay').classList.remove('show');
-        document.getElementById('elim-overlay').classList.remove('show');
-        if (document.getElementById('answer-input')) {
-          document.getElementById('answer-input').disabled = false;
-        }
-        // Update waiting room UI
+        document.getElementById('answer-input').disabled = false;
+        document.getElementById('btn-submit-answer').disabled = false;
         document.getElementById('display-room-code').textContent = state.roomCode;
-        document.getElementById('display-capacity').textContent = payload.capacity || payload.players.length;
-        renderPlayerList(payload.players, payload.capacity || payload.players.length);
-        // Cek apakah room sudah penuh untuk tentukan tampilan host
-        const isFull = payload.players.length >= (payload.capacity || payload.players.length);
+        document.getElementById('display-capacity').textContent = payload.capacity;
+        renderPlayerList(payload.players, payload.capacity);
+        const isFull = payload.players.length >= payload.capacity;
         if (state.isHost && isFull) {
           document.getElementById('btn-start-game').style.display = 'block';
           document.getElementById('waiting-hint').style.display = 'none';
-        } else if (state.isHost && !isFull) {
-          document.getElementById('btn-start-game').style.display = 'none';
-          document.getElementById('waiting-hint').style.display = 'block';
-          document.getElementById('waiting-hint').textContent = '⏳ Menunggu pemain lain bergabung...';
         } else {
           document.getElementById('btn-start-game').style.display = 'none';
           document.getElementById('waiting-hint').style.display = 'block';
-          document.getElementById('waiting-hint').textContent = '⏳ Menunggu host memulai ulang...';
+          document.getElementById('waiting-hint').textContent = state.isHost ? 'Menunggu pemain lain bergabung...' : 'Menunggu host memulai ulang...';
         }
         showScreen('screen-waiting');
-        showToast('Kembali ke lobby! Siap main lagi? 🔄', 'info', '🔄');
+        showToast('Kembali ke lobby! Siap main lagi?', 'info');
         break;
       }
 
@@ -1311,23 +887,21 @@
     }
   }
 
-  // ===== PLAYER LIST =====
   function renderPlayerList(players, capacity) {
     const list = document.getElementById('player-list');
-    const countEl = document.getElementById('display-player-count');
-    const capEl = document.getElementById('display-capacity');
     list.innerHTML = '';
-    countEl.textContent = players.length;
-    capEl.textContent = capacity;
-
-    const colors = ['#ff6b6b','#ffd93d','#6bcb77','#4d96ff','#c77dff','#ff9f43','#54a0ff','#5f27cd'];
+    document.getElementById('display-player-count').textContent = players.length;
+    document.getElementById('display-capacity').textContent = capacity;
+    const colors = ['#ff4757','#ff9f1c','#2ec4b6','#3a86ff','#8338ec','#ff6b9d','#06d6a0','#ffd166'];
     const emojis = ['🐱','🐶','🐸','🦊','🐼','🐨','🦁','🐯'];
-
     players.forEach((p, i) => {
       const li = document.createElement('li');
       li.className = 'player-item';
       const isMe = p.id === state.playerId;
-      const badge = p.isHost ? `<span class="player-badge badge-host">Host</span>` : (isMe ? `<span class="player-badge badge-ready">Kamu</span>` : `<span class="player-badge badge-waiting">Siap</span>`);
+      const badge = p.isHost
+        ? `<span class="player-badge badge-host">Host</span>`
+        : isMe ? `<span class="player-badge badge-ready">Kamu</span>`
+        : `<span class="player-badge badge-waiting">Siap</span>`;
       li.innerHTML = `
         <div class="player-avatar" style="background:${colors[i%colors.length]}22;border:2px solid ${colors[i%colors.length]}">${emojis[i%emojis.length]}</div>
         <span class="player-name">${p.username}${isMe ? ' (Kamu)' : ''}</span>
@@ -1337,7 +911,6 @@
     });
   }
 
-  // ===== LIVES =====
   function renderLives(lives) {
     const row = document.getElementById('my-lives');
     row.innerHTML = '';
@@ -1350,7 +923,6 @@
     }
   }
 
-  // ===== OPPONENTS =====
   function renderOpponents(opponents) {
     const grid = document.getElementById('opponents-grid');
     grid.innerHTML = '';
@@ -1364,7 +936,7 @@
       div.innerHTML = `
         <div class="opponent-name">${emojis[i%emojis.length]} ${op.username} ${op.eliminated ? '<span class="eliminated-tag">ELIMINATED</span>' : ''}</div>
         <div class="opponent-lives">${heartsHtml}</div>
-        <div class="opponent-status">${op.eliminated ? 'Sudah gugur 💀' : `Kata #${op.wordCount || 1}`}</div>
+        <div class="opponent-status">${op.eliminated ? 'Sudah gugur' : `Kata #${op.wordCount || 1}`}</div>
       `;
       grid.appendChild(div);
     });
@@ -1389,25 +961,57 @@
     if (!card) return;
     card.classList.add('eliminated');
     const nameEl = card.querySelector('.opponent-name');
-    if (nameEl && !nameEl.querySelector('.eliminated-tag')) {
-      nameEl.innerHTML += ' <span class="eliminated-tag">ELIMINATED</span>';
-    }
+    if (nameEl && !nameEl.querySelector('.eliminated-tag')) nameEl.innerHTML += ' <span class="eliminated-tag">ELIMINATED</span>';
     const statusEl = card.querySelector('.opponent-status');
-    if (statusEl) statusEl.textContent = 'Sudah gugur 💀';
+    if (statusEl) statusEl.textContent = 'Sudah gugur';
   }
 
-  // ===== TIMER =====
+  function showSpectatorBanner() {
+    const old = document.getElementById('spectator-banner');
+    if (old) old.remove();
+    document.getElementById('my-word-card').style.display = 'none';
+    document.getElementById('my-timer-wrap').style.display = 'none';
+    document.getElementById('my-answer-wrap').style.display = 'none';
+    document.getElementById('my-submit-hint').style.display = 'none';
+    const banner = document.createElement('div');
+    banner.id = 'spectator-banner';
+    banner.style.cssText = `
+      background: linear-gradient(135deg, rgba(255,71,87,.08), rgba(131,56,236,.08));
+      border: 2px solid #ff4757; border-radius: 14px;
+      padding: 24px 20px; text-align: center;
+      margin: 8px 0 16px; animation: popIn .4s cubic-bezier(.34,1.56,.64,1);
+    `;
+    banner.innerHTML = `
+      <div style="font-size:40px;margin-bottom:8px">💀</div>
+      <div style="font-family:'Fredoka One',cursive;font-size:22px;color:#ff4757;margin-bottom:6px">Kamu Tereliminasi!</div>
+      <div style="font-size:14px;color:var(--muted);font-weight:700">Menonton pertandingan yang masih berlangsung...</div>
+    `;
+    const livesRow = document.querySelector('.lives-row');
+    if (livesRow) livesRow.parentNode.parentNode.appendChild(banner);
+  }
+
+  function hideSpectatorBanner() {
+    const banner = document.getElementById('spectator-banner');
+    if (banner) banner.remove();
+    const wc = document.getElementById('my-word-card');
+    const tw = document.getElementById('my-timer-wrap');
+    const aw = document.getElementById('my-answer-wrap');
+    const sh = document.getElementById('my-submit-hint');
+    if (wc) wc.style.display = '';
+    if (tw) tw.style.display = '';
+    if (aw) aw.style.display = '';
+    if (sh) sh.style.display = '';
+  }
+
   function startTimer(seconds) {
     stopTimer();
     Audio.stopTick();
-    state.timerSeconds = seconds;
     const fill = document.getElementById('timer-fill');
     const val = document.getElementById('timer-val');
     let remaining = seconds;
     val.textContent = remaining;
     fill.style.width = '100%';
     fill.className = 'timer-fill';
-
     state.timerInterval = setInterval(() => {
       remaining--;
       val.textContent = remaining;
@@ -1424,7 +1028,6 @@
     if (state.timerInterval) { clearInterval(state.timerInterval); state.timerInterval = null; }
   }
 
-  // ===== COUNTDOWN =====
   function startCountdown(onDone) {
     showScreen('screen-countdown');
     let count = 3;
@@ -1435,7 +1038,7 @@
       count--;
       if (count <= 0) {
         clearInterval(iv);
-        el.textContent = '🎮';
+        el.textContent = '▶';
         Audio.countdownGo();
         setTimeout(onDone, 600);
       } else {
@@ -1447,190 +1050,6 @@
     }, 1000);
   }
 
-
-  // ============================================================
-  //  AUDIO ENGINE (Web Audio API — no files needed)
-  // ============================================================
-  const Audio = (() => {
-    let ctx = null;
-    let musicInterval = null;
-    let musicNodes = [];
-    let muted = false;
-    let musicStep = 0;
-    let tickInterval = null;
-
-    function getCtx() {
-      if (!ctx) ctx = new (window.AudioContext || window.webkitAudioContext)();
-      if (ctx.state === 'suspended') ctx.resume();
-      return ctx;
-    }
-
-    function beep(freq, type, duration, gainVal, startTime) {
-      if (muted) return;
-      const ac = getCtx();
-      const t = startTime !== undefined ? startTime : ac.currentTime;
-      const osc = ac.createOscillator();
-      const g = ac.createGain();
-      osc.connect(g); g.connect(ac.destination);
-      osc.type = type || 'sine';
-      osc.frequency.setValueAtTime(freq, t);
-      g.gain.setValueAtTime(gainVal || 0.3, t);
-      g.gain.exponentialRampToValueAtTime(0.001, t + duration);
-      osc.start(t); osc.stop(t + duration + 0.02);
-      return osc;
-    }
-
-    // --- SFX ---
-    function correct() {
-      const ac = getCtx(); const t = ac.currentTime;
-      beep(523, 'sine', 0.1, 0.25, t);
-      beep(659, 'sine', 0.1, 0.25, t + 0.09);
-      beep(784, 'sine', 0.18, 0.28, t + 0.18);
-    }
-
-    function wrong() {
-      const ac = getCtx(); const t = ac.currentTime;
-      beep(200, 'sawtooth', 0.07, 0.22, t);
-      beep(150, 'sawtooth', 0.14, 0.22, t + 0.07);
-    }
-
-    function newWord() {
-      if (muted) return;
-      const ac = getCtx();
-      const buf = ac.createBuffer(1, ac.sampleRate * 0.12, ac.sampleRate);
-      const data = buf.getChannelData(0);
-      for (let i = 0; i < data.length; i++)
-        data[i] = (Math.random() * 2 - 1) * (1 - i / data.length) * 0.15;
-      const src = ac.createBufferSource();
-      const filt = ac.createBiquadFilter();
-      filt.type = 'highpass'; filt.frequency.value = 900;
-      src.buffer = buf;
-      src.connect(filt); filt.connect(ac.destination);
-      src.start();
-    }
-
-    function eliminated() {
-      const ac = getCtx(); const t = ac.currentTime;
-      beep(330, 'sawtooth', 0.14, 0.28, t);
-      beep(277, 'sawtooth', 0.14, 0.28, t + 0.14);
-      beep(220, 'sawtooth', 0.38, 0.28, t + 0.28);
-    }
-
-    function win() {
-      const ac = getCtx(); const t = ac.currentTime;
-      [523, 659, 784, 1047].forEach((f, i) => beep(f, 'sine', 0.16, 0.28, t + i * 0.11));
-      beep(1047, 'sine', 0.5, 0.32, t + 0.55);
-    }
-
-    function lose() {
-      const ac = getCtx(); const t = ac.currentTime;
-      [440, 392, 349, 294, 261].forEach((f, i) => beep(f, 'sine', 0.18, 0.22, t + i * 0.1));
-    }
-
-    function countdown() {
-      const ac = getCtx(); const t = ac.currentTime;
-      beep(660, 'square', 0.1, 0.2, t);
-    }
-
-    function countdownGo() {
-      const ac = getCtx(); const t = ac.currentTime;
-      beep(880, 'square', 0.06, 0.25, t);
-      beep(1100, 'square', 0.12, 0.25, t + 0.07);
-    }
-
-    // Tick sound when timer < 8s
-    function startTick() {
-      stopTick();
-      if (muted) return;
-      tickInterval = setInterval(() => {
-        const ac = getCtx(); const t = ac.currentTime;
-        beep(880, 'square', 0.035, 0.12, t);
-      }, 500);
-    }
-
-    function stopTick() {
-      if (tickInterval) { clearInterval(tickInterval); tickInterval = null; }
-    }
-
-    // --- CHIPTUNE MUSIC ---
-    function startChiptune() {
-      if (muted) { musicInterval = setInterval(() => {}, 99999); return; }
-      stopChiptune();
-      musicStep = 0;
-      const ac = getCtx();
-      // Melody: simple 16-note loop in C major
-      const melody = [523,587,659,698,784,698,659,587,523,494,523,587,659,784,659,523];
-      const bass   = [131,131,147,147,165,165,175,175];
-
-      const play = () => {
-        if (muted) return;
-        const t = ac.currentTime;
-        const mFreq = melody[musicStep % melody.length];
-        const bFreq = bass[Math.floor(musicStep / 2) % bass.length];
-
-        // Melody (square wave - classic chiptune)
-        const o1 = ac.createOscillator();
-        const g1 = ac.createGain();
-        o1.type = 'square'; o1.frequency.value = mFreq;
-        g1.gain.setValueAtTime(0.08, t);
-        g1.gain.exponentialRampToValueAtTime(0.001, t + 0.13);
-        o1.connect(g1); g1.connect(ac.destination);
-        o1.start(t); o1.stop(t + 0.14);
-        musicNodes.push(o1);
-
-        // Bass (every 2 steps)
-        if (musicStep % 2 === 0) {
-          const o2 = ac.createOscillator();
-          const g2 = ac.createGain();
-          o2.type = 'square'; o2.frequency.value = bFreq;
-          g2.gain.setValueAtTime(0.05, t);
-          g2.gain.exponentialRampToValueAtTime(0.001, t + 0.26);
-          o2.connect(g2); g2.connect(ac.destination);
-          o2.start(t); o2.stop(t + 0.27);
-          musicNodes.push(o2);
-        }
-
-        // Hi-hat (noise every 4 steps)
-        if (musicStep % 4 === 0) {
-          const buf = ac.createBuffer(1, ac.sampleRate * 0.04, ac.sampleRate);
-          const d = buf.getChannelData(0);
-          for (let i = 0; i < d.length; i++) d[i] = (Math.random()*2-1) * (1 - i/d.length) * 0.06;
-          const src = ac.createBufferSource();
-          const filt = ac.createBiquadFilter();
-          filt.type = 'highpass'; filt.frequency.value = 3000;
-          src.buffer = buf; src.connect(filt); filt.connect(ac.destination);
-          src.start(t);
-          musicNodes.push(src);
-        }
-
-        musicStep++;
-        if (musicNodes.length > 60) musicNodes.splice(0, 30);
-      };
-
-      play();
-      musicInterval = setInterval(play, 150);
-    }
-
-    function stopChiptune() {
-      if (musicInterval) { clearInterval(musicInterval); musicInterval = null; }
-      musicNodes.forEach(n => { try { n.stop(); } catch(e){} });
-      musicNodes = [];
-    }
-
-    function toggleMute() {
-      muted = !muted;
-      if (muted) { stopChiptune(); stopTick(); }
-      return muted;
-    }
-
-    function isMuted() { return muted; }
-
-    return { correct, wrong, newWord, eliminated, win, lose, countdown, countdownGo,
-             startTick, stopTick, startChiptune, stopChiptune, toggleMute, isMuted };
-  })();
-
-
-  // ===== LEADERBOARD =====
   function renderLeaderboard(data, myId) {
     const section = document.getElementById('leaderboard-section');
     const list = document.getElementById('leaderboard-list');
@@ -1654,28 +1073,53 @@
     });
   }
 
-  // ===== MUTE BUTTON =====
+  const Audio = (() => {
+    let ctx = null, muted = false, tickInterval = null;
+    function getCtx() {
+      if (!ctx) ctx = new (window.AudioContext || window.webkitAudioContext)();
+      if (ctx.state === 'suspended') ctx.resume();
+      return ctx;
+    }
+    function beep(freq, type, duration, gainVal, startTime) {
+      if (muted) return;
+      const ac = getCtx(), t = startTime ?? ac.currentTime;
+      const osc = ac.createOscillator(), g = ac.createGain();
+      osc.connect(g); g.connect(ac.destination);
+      osc.type = type || 'sine';
+      osc.frequency.setValueAtTime(freq, t);
+      g.gain.setValueAtTime(gainVal || 0.3, t);
+      g.gain.exponentialRampToValueAtTime(0.001, t + duration);
+      osc.start(t); osc.stop(t + duration + 0.02);
+    }
+    function correct() { const ac=getCtx(),t=ac.currentTime; beep(523,'sine',.1,.25,t); beep(659,'sine',.1,.25,t+.09); beep(784,'sine',.18,.28,t+.18); }
+    function wrong() { const ac=getCtx(),t=ac.currentTime; beep(200,'sawtooth',.07,.22,t); beep(150,'sawtooth',.14,.22,t+.07); }
+    function newWord() {
+      if (muted) return;
+      const ac=getCtx(), buf=ac.createBuffer(1,ac.sampleRate*.12,ac.sampleRate), d=buf.getChannelData(0);
+      for(let i=0;i<d.length;i++) d[i]=(Math.random()*2-1)*(1-i/d.length)*.15;
+      const src=ac.createBufferSource(), filt=ac.createBiquadFilter();
+      filt.type='highpass'; filt.frequency.value=900;
+      src.buffer=buf; src.connect(filt); filt.connect(ac.destination); src.start();
+    }
+    function eliminated() { const ac=getCtx(),t=ac.currentTime; beep(330,'sawtooth',.14,.28,t); beep(277,'sawtooth',.14,.28,t+.14); beep(220,'sawtooth',.38,.28,t+.28); }
+    function win() { const ac=getCtx(),t=ac.currentTime; [523,659,784,1047].forEach((f,i)=>beep(f,'sine',.16,.28,t+i*.11)); beep(1047,'sine',.5,.32,t+.55); }
+    function lose() { const ac=getCtx(),t=ac.currentTime; [440,392,349,294,261].forEach((f,i)=>beep(f,'sine',.18,.22,t+i*.1)); }
+    function countdown() { const ac=getCtx(),t=ac.currentTime; beep(660,'square',.1,.2,t); }
+    function countdownGo() { const ac=getCtx(),t=ac.currentTime; beep(880,'square',.06,.25,t); beep(1100,'square',.12,.25,t+.07); }
+    function startTick() {
+      stopTick();
+      if (muted) return;
+      tickInterval = setInterval(() => { const ac=getCtx(),t=ac.currentTime; beep(880,'square',.035,.12,t); }, 500);
+    }
+    function stopTick() { if (tickInterval) { clearInterval(tickInterval); tickInterval = null; } }
+    function toggleMute() { muted=!muted; if(muted) stopTick(); return muted; }
+    return { correct, wrong, newWord, eliminated, win, lose, countdown, countdownGo, startTick, stopTick, toggleMute };
+  })();
+
   document.getElementById('mute-btn').addEventListener('click', () => {
     const muted = Audio.toggleMute();
     document.getElementById('mute-btn').textContent = muted ? '🔇' : '🔊';
   });
-
-  // ===== DEMO MODE (no server) — remove when backend ready =====
-  // Uncomment below to test UI without server
-  /*
-  setTimeout(() => {
-    state.playerId = 'me';
-    state.username = 'Kamu';
-    state.roomCode = 'AB3X9';
-    document.getElementById('display-room-code').textContent = 'AB3X9';
-    const demoPlayers = [
-      { id: 'me', username: 'Kamu', isHost: true },
-      { id: 'p2', username: 'BudiSantoso', isHost: false },
-    ];
-    renderPlayerList(demoPlayers, 2);
-    showScreen('screen-waiting');
-  }, 100);
-  */
 </script>
 </body>
 </html>

@@ -77,7 +77,7 @@ http://localhost:3000
 - Nyawa habis → tereliminasi
 - Pemain terakhir yang bertahan = **MENANG!**
 
-## 🌐 WebSocket Events
+## WebSocket Events
 
 ### Client → Server
 | `create_room` | `{ username, capacity }` | Buat room baru |
